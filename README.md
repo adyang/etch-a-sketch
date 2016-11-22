@@ -1,0 +1,1 @@
+This project is to practice Javascript/jQuery skills by creating a browser version of a sketchpad/Etch-a-Sketch hybrid.
