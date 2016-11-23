@@ -29,12 +29,12 @@ $(document).ready(function() {
 	}
 	
 	// Initial grid
-	var initialSquaresPerSide = 16;
-	createGrid(initialSquaresPerSide);
+	var numSquaresPerSide = 16;
+	createGrid(numSquaresPerSide);
 	
 	// For creation of new grid
 	$('#new-grid-button').click(function() {
-		var numSquaresPerSide = prompt("How many squares per side to make new grid?");
+		numSquaresPerSide = prompt("How many squares per side to make new grid?");
 		
 		while (numSquaresPerSide !== null && !$.isNumeric(numSquaresPerSide)
 			&& !(parseInt(numSquaresPerSide) > 0)) {
@@ -47,6 +47,36 @@ $(document).ready(function() {
 		}
 	});
 	
+	// For changing modes
+	var currMode = "black";
+	$('#black-sketch-button').click(function() {
+		currMode = "black";
+		clearGrid();
+		createGrid(numSquaresPerSide);
+	});
+	$('#color-sketch-button').click(function() {
+		currMode = "color";
+		clearGrid();
+		createGrid(numSquaresPerSide);
+	});
+	$('#black-inc-button').click(function() {
+		currMode = "black-increment";
+		clearGrid();
+		createGrid(numSquaresPerSide);
+		$('.square').css({
+				"-webkit-transition": "all 0s",
+				"-moz-transition": "all 0s",
+				"-o-transition": "all 0s",
+				"transition": "all 0s"
+			});
+		$('.square').css("background-color", "rgba(0, 0, 0, 0)");
+	});
+	$('#flicker-button').click(function() {
+		currMode = "flicker";
+		clearGrid();
+		createGrid(numSquaresPerSide);
+	});
+	
 	// For hovering animation
 	var getRandomColorForHover = function() {
 		var red = Math.floor(Math.random() * 256);
@@ -56,18 +86,33 @@ $(document).ready(function() {
 		return rgbStr;
 	}
 	var activateSquare = function() {
-		// $(this).addClass('hover');
-		$(this).stop();
-		$(this).css("background-color", getRandomColorForHover());
-		$(this).css({
-			"-webkit-transition": "all 0s ease",
-			"-moz-transition": "all 0s ease",
-			"-o-transition": "all 0s ease",
-			"transition": "all 0s ease"
-		});
+		if (currMode === "color") {
+			$(this).stop();
+			$(this).css("background-color", getRandomColorForHover());
+			$(this).css({
+				"-webkit-transition": "all 0s",
+				"-moz-transition": "all 0s",
+				"-o-transition": "all 0s",
+				"transition": "all 0s"
+			});
+		} else if (currMode === "black-increment") {
+			var currBgColor = $(this).css("background-color");
+			var alpha = parseFloat(currBgColor.substring(14));
+			if (alpha < 1.0) {
+				alpha += 0.1;
+			} else {
+				alpha = 1.0;
+			}
+			var newBgColor = "rgba(0, 0, 0, " + alpha + ")";
+			$(this).css("background-color", newBgColor);
+		} else {
+			$(this).addClass('hover');
+		}
 	}
 	var deactivateSquare = function() {
-		// $(this).removeClass('hover');
+		if (currMode === "flicker") {
+			$(this).removeClass('hover');
+		}
 	}
 	$(document).on('mouseenter', '.square', activateSquare);
 	$(document).on('mouseleave', '.square', deactivateSquare);
