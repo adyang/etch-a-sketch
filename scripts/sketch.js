@@ -1,10 +1,14 @@
 $(document).ready(function() {
-	var initialSquaresPerSide = 16;
-	
+	var getSquareBorderLength = function() {
+		var tempSquare =$('<div class="square"></div>').hide().appendTo("body");
+		var borderLengthWithUnit = tempSquare.css('border-width');
+		tempSquare.remove();
+		return parseInt(borderLengthWithUnit);
+	}
 	
 	var createGrid = function(numSquaresPerSide) {
 		var gridLength = $('#sketch-container').width(); // Assume square
-		var totalBorderLength = 2 * numSquaresPerSide;
+		var totalBorderLength = 2 * getSquareBorderLength() * numSquaresPerSide;
 		var squareLength = (gridLength - totalBorderLength) / numSquaresPerSide;
 		var totalNumSquares = numSquaresPerSide * numSquaresPerSide;
 		for (var i = 0; i < totalNumSquares; i++) {
@@ -20,6 +24,7 @@ $(document).ready(function() {
 	}
 	
 	// Initial grid
+	var initialSquaresPerSide = 16;
 	createGrid(initialSquaresPerSide);
 	
 	// For creation of new grid
