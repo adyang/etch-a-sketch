@@ -11,4 +11,14 @@ $(document).ready(function() {
 		sqDiv.height(squareLength);
 		sqDiv.width(squareLength);
 	}
+	
+	var activateSquare = function() {
+		$(this).addClass('hover');
+	}
+	
+	var deactivateSquare = function() {
+		$(this).removeClass('hover');
+	}
+	
+	$('.square').hover(activateSquare, deactivateSquare);
 });
