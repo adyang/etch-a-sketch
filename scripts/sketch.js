@@ -11,12 +11,13 @@ $(document).ready(function() {
 		var totalBorderLength = 2 * getSquareBorderLength() * numSquaresPerSide;
 		var squareLength = (gridLength - totalBorderLength) / numSquaresPerSide;
 		var totalNumSquares = numSquaresPerSide * numSquaresPerSide;
+		var sqDiv = "";
 		for (var i = 0; i < totalNumSquares; i++) {
-			var sqDiv = $('<div class="square"></div>');
-			$('#sketch-container').append(sqDiv);
-			sqDiv.height(squareLength);
-			sqDiv.width(squareLength);
-		}	
+			sqDiv += '<div class="square"></div>'; 
+		}
+		$('#sketch-container').append($(sqDiv));
+		$('.square').height(squareLength);
+		$('.square').width(squareLength);
 	}
 	
 	var clearGrid = function() {
