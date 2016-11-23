@@ -1,9 +1,13 @@
 $(document).ready(function() {
+	var getCssValueFromStyleSheet = function(selectorClass, cssPropertyName) {
+		var tempDiv = $('<div class="' + selectorClass + '"></div>').hide().appendTo("body");
+		var cssValue = tempDiv.css(cssPropertyName);
+		tempDiv.remove();
+		return cssValue;
+	}
+	
 	var getSquareBorderLength = function() {
-		var tempSquare =$('<div class="square"></div>').hide().appendTo("body");
-		var borderLengthWithUnit = tempSquare.css('border-width');
-		tempSquare.remove();
-		return parseInt(borderLengthWithUnit);
+		return parseInt(getCssValueFromStyleSheet("square", "border-width"));
 	}
 	
 	var createGrid = function(numSquaresPerSide) {
@@ -44,11 +48,26 @@ $(document).ready(function() {
 	});
 	
 	// For hovering animation
+	var getRandomColorForHover = function() {
+		var red = Math.floor(Math.random() * 256);
+		var green = Math.floor(Math.random() * 256);
+		var blue = Math.floor(Math.random() * 256);
+		var rgbStr = "rgb(" + red + ", " + green + ", " + blue + ")";
+		return rgbStr;
+	}
 	var activateSquare = function() {
-		$(this).addClass('hover');
+		// $(this).addClass('hover');
+		$(this).stop();
+		$(this).css("background-color", getRandomColorForHover());
+		$(this).css({
+			"-webkit-transition": "all 0s ease",
+			"-moz-transition": "all 0s ease",
+			"-o-transition": "all 0s ease",
+			"transition": "all 0s ease"
+		});
 	}
 	var deactivateSquare = function() {
-		$(this).removeClass('hover');
+		// $(this).removeClass('hover');
 	}
 	$(document).on('mouseenter', '.square', activateSquare);
 	$(document).on('mouseleave', '.square', deactivateSquare);
