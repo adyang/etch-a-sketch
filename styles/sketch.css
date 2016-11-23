@@ -18,3 +18,7 @@
     -o-transition: all 0s;
     transition: all 0s;
 }
+
+#new-grid-button {
+	margin-bottom: 5px;
+}
